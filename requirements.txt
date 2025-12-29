@@ -1,4 +1,0 @@
-nfl_data_py
-pandas
-sqlalchemy
-psycopg2-binary
