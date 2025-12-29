@@ -144,7 +144,7 @@ Format your responses in a conversational, helpful tone. When making recommendat
     return this.sendMessage(enhancedMessage);
   }
 
-  async analyzePlayer(playerId: string, playerData: any): Promise<AnalysisResponse> {
+  async analyzePlayer(_playerId: string, playerData: any): Promise<AnalysisResponse> {
     const message = `Please provide a detailed analysis of this player:\n\n${JSON.stringify(playerData, null, 2)}\n\nInclude:
 1. Current performance assessment
 2. Upcoming matchup analysis
@@ -154,7 +154,7 @@ Format your responses in a conversational, helpful tone. When making recommendat
     return this.sendMessage(message);
   }
 
-  private extractRecommendations(message: string): any[] {
+  private extractRecommendations(message: string): any[] | undefined {
     const recommendations: any[] = [];
     
     const startSitPattern = /(?:start|sit):\s*([^\n]+)/gi;
@@ -170,7 +170,7 @@ Format your responses in a conversational, helpful tone. When making recommendat
       });
     }
     
-    return recommendations.length > 0 ? recommendations : null;
+    return recommendations.length > 0 ? recommendations : undefined;
   }
 }
 

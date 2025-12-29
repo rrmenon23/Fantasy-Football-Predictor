@@ -39,7 +39,7 @@ export const Query = {
   ) => {
     try {
       const leagues = await context.dataSources!.sleeperService.getUserLeagues(userId, sport, season);
-      return leagues.map(league => ({
+      return leagues.map((league:any) => ({
         id: league.league_id,
         name: league.name,
         season: league.season,
@@ -77,7 +77,7 @@ export const Query = {
   getLeagueRosters: async (_: any, { leagueId }: { leagueId: string }, context: GraphQLContext) => {
     try {
       const rosters = await context.dataSources!.sleeperService.getLeagueRosters(leagueId);
-      return rosters.map(roster => ({
+      return rosters.map((roster:any) => ({
         id: roster.roster_id,
         ownerId: roster.owner_id,
         leagueId: roster.league_id,
@@ -98,7 +98,7 @@ export const Query = {
   getLeagueUsers: async (_: any, { leagueId }: { leagueId: string }, context: GraphQLContext) => {
     try {
       const users = await context.dataSources!.sleeperService.getLeagueUsers(leagueId);
-      return users.map(user => ({
+      return users.map((user:any) => ({
         userId: user.user_id,
         username: user.username,
         displayName: user.display_name,
@@ -118,7 +118,7 @@ export const Query = {
   ) => {
     try {
       const matchups = await context.dataSources!.sleeperService.getMatchups(leagueId, week);
-      return matchups.map(matchup => ({
+      return matchups.map((matchup:any) => ({
         rosterId: matchup.roster_id,
         matchupId: matchup.matchup_id,
         starters: matchup.starters,
@@ -166,7 +166,7 @@ export const Query = {
   ) => {
     try {
       const players = await context.dataSources!.sleeperService.searchPlayers(query, limit);
-      return players.map(player => ({
+      return players.map((player:any) => ({
         id: player.player_id,
         firstName: player.first_name,
         lastName: player.last_name,
@@ -202,7 +202,7 @@ export const Query = {
       );
       
       // Fetch player details for each trending player
-      const playersPromises = trending.map(async (t) => {
+      const playersPromises = trending.map(async (t:any) => {
         const player = await context.dataSources!.sleeperService.getPlayer(t.player_id);
         return {
           playerId: t.player_id,

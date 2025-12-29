@@ -169,7 +169,7 @@ class AnalysisService {
     if (searchResults.length === 0) {
       return {
         message: `I couldn't find information about "${playerNames[0]}". Please check the spelling or try a different player.`,
-        recommendations: null,
+        recommendations: undefined,
       };
     }
 
