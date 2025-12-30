@@ -1,0 +1,54 @@
+# Environment variables (NEVER COMMIT THESE!)
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# But DO commit the examples
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build output
+dist/
+build/
+backend/dist/
+frontend/dist/
+
+# Python virtual environment
+env/
+venv/
+*.pyc
+__pycache__/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Database
+postgres_data/
+*.db
+*.sqlite
+
+# TypeScript
+*.tsbuildinfo
+
+# Package manager lock files (optional - some people commit these)
+# package-lock.json
+# yarn.lock
