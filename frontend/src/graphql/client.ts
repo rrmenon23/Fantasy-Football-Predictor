@@ -12,12 +12,12 @@ export const apolloClient = new ApolloClient({
       Query: {
         fields: {
           searchPlayers: {
-            merge(existing = [], incoming) {
+            merge(_existing, incoming) {
               return incoming;
             },
           },
           getTrendingPlayers: {
-            merge(existing = [], incoming) {
+            merge(_existing, incoming) {
               return incoming;
             },
           },
