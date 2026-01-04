@@ -1,4 +1,6 @@
 import { useLineup } from '@/hooks/useLineup';
+import { useQuery } from '@apollo/client';
+import { GET_LEAGUE_USERS } from '@/graphql/queries';
 import LeagueConnector from './LeagueConnector';
 import RosterPlayer from './RosterPlayer';
 import LineupRecommendations from './LineupRecommendations';
@@ -15,6 +17,22 @@ const LineupBuilder = () => {
     selectRoster,
     loading,
   } = useLineup();
+
+  // Fetch league users to get team names
+  const { data: leagueUsersData } = useQuery(GET_LEAGUE_USERS, {
+    variables: { leagueId: lineupState.leagueId || '' },
+    skip: !lineupState.leagueId,
+  });
+
+  const leagueUsers = leagueUsersData?.getLeagueUsers || [];
+
+  // Helper function to get team name
+  const getTeamName = (ownerId: string) => {
+    const user = leagueUsers.find((u: any) => u.userId === ownerId);
+    if (user?.teamName) return user.teamName;
+    if (user?.displayName) return user.displayName;
+    return `Team ${ownerId.slice(0, 8)}`;
+  };
 
   const hasLineup = lineupState.starters.length > 0 || lineupState.bench.length > 0;
 
@@ -50,25 +68,40 @@ const LineupBuilder = () => {
             </div>
           ) : (
             <div className="grid gap-3">
-              {rosters.map((roster: any) => (
-                <button
-                  key={roster.id}
-                  onClick={() => selectRoster(roster.id)}
-                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-left"
-                >
-                  <div className="flex items-center space-x-3">
-                    <Users className="w-5 h-5 text-gray-400" />
-                    <div>
-                      <div className="font-medium text-gray-900">
-                        Team {roster.id} - Owner: {roster.ownerId}
+              {rosters.map((roster: any) => {
+                const teamName = getTeamName(roster.ownerId);
+                const user = leagueUsers.find((u: any) => u.userId === roster.ownerId);
+                
+                return (
+                  <button
+                    key={roster.id}
+                    onClick={() => selectRoster(roster.id)}
+                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-left"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                        <Users className="w-5 h-5 text-primary-600" />
                       </div>
-                      <div className="text-sm text-gray-600">
-                        {roster.wins}-{roster.losses}-{roster.ties} • {roster.points.toFixed(2)} pts
+                      <div>
+                        <div className="font-medium text-gray-900">
+                          {teamName}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {user?.displayName || `Manager ${roster.ownerId.slice(0, 8)}`}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                    <div className="text-right">
+                      <div className="font-semibold text-gray-900">
+                        {roster.wins}-{roster.losses}-{roster.ties}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        {roster.points.toFixed(2)} pts
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
